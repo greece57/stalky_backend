@@ -5,9 +5,9 @@ import time
 # import ptvsd
 
 print("Waiting for Database to start.. (20s)")
-time.sleep(20)
+time.sleep(10)
 
-from .app import APP
+from app import APP
 
 # Import CherryPy
 import cherrypy

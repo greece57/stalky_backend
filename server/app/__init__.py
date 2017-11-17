@@ -2,7 +2,8 @@
 from flask import Flask
 from flask_restful import Api
 from app.db import DB
-from model import *
+from app.model import *
+from app.api.facebook_api import FacebookAPI
 
 # Create Flask Application
 APP = Flask(__name__)
@@ -24,3 +25,4 @@ def _db_close(exc):
     if not DB.is_closed():
         DB.close()
 
+API.add_resource(FacebookAPI, "/api/fb/<id>")
