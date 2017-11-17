@@ -1,0 +1,6 @@
+facebook-sdk==2.0.0
+peewee==2.10.1
+PyMySQL==0.7.11
+Flask==0.12.2
+Flask-Restful==0.3.6
+CherryPy==11.0.0

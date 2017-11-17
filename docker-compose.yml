@@ -1,0 +1,21 @@
+version: '2'
+
+services:
+  db:
+    build: db/.
+    environment:
+      MYSQL_ROOT_PASSWORD: supersecret
+      MYSQL_DATABASE: stalky
+      MYSQL_USER: stalky
+      MYSQL_PASSWORD: stalky
+    volumes:
+      - ./database:/var/lib/mysql
+
+  www:
+    build: ./server
+    ports:
+      - "80:80"
+    links:
+      - db
+    depends_on:
+      - db
