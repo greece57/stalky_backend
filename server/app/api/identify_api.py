@@ -1,3 +1,4 @@
+import os
 from flask import request, jsonify
 from flask_restful import Resource
 from app.model import Image
@@ -10,7 +11,8 @@ from app.model.user import User
 class IdentifyApi(Resource):
 
     def get(self):
-        from flask import send_from_directory
+        from flask import send_file
+        from werkzeug.utils import secure_filename
         from app import APP
 
         filename = request.args.get("filename")
@@ -19,10 +21,14 @@ class IdentifyApi(Resource):
             response.status_code = 400
             return response
 
-        return send_from_directory(APP.config['UPLOAD_FOLDER'], filename)
+        path = os.path.join("..", APP.config['UPLOAD_FOLDER'], filename)
+        print(path)
+        if secure_filename(filename):
+            return send_file(path)
+        else:
+            return jsonify({"Fuck":"you"})
 
     def post(self):
-        import os
         from werkzeug.utils import secure_filename
         from app import APP
 
@@ -48,13 +54,15 @@ class IdentifyApi(Resource):
         file_suffix = filename.rsplit('.', 1)[1].lower()
         if file and file_suffix == "jpg":
             filename = secure_filename(file.filename)
+            print(os.path.join(APP.config['UPLOAD_FOLDER'], filename))
             file.save(os.path.join(APP.config['UPLOAD_FOLDER'], filename))
         else:
             response = jsonify({"Error" : "Wrong file extension: '" + str(file_suffix) + "'"})
             response.status_code = 400
             return response
 
-        #image_url = "http://" + str(APP.config['WHOAMI']) + "/api/identify?filename=" + str(filename)
+        image_url = "http://" + str(APP.config['WHOAMI']) + "/api/identify?filename=" + str(filename)
+        #print(image_url)
         #friend, confidence = FaceApi().identify_face(id, image_url)
         #response = jsonify({"Friend Name":friend.name,
         #                "Confidence":confidence})
