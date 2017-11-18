@@ -39,7 +39,7 @@ class IdentifyApi(Resource):
             return response
 
         if 'file' not in request.files:
-            response = jsonify({"Error":"No file part"})
+            response = jsonify(request.files)
             response.status_code = 400
             return response
 
