@@ -54,7 +54,7 @@ class FaceApi():
         elif len(faces) > 1:
             for face in faces:
                 rect = face["faceRectangle"]
-                if(self.overlap(x,x+width,y, y+height,rect["left"],rect["left"]+width,rect["top"],rect["top"]+height)):
+                if(self.overlap(x,x+width,y, y+height,rect["left"],rect["left"]+rect["width"],rect["top"],rect["top"]+rect["height"])):
                     print("alive5")
                     identify_response = CF.face.identify([face["faceId"]], id)
                     if len(identify_response[0]["candidates"]):
@@ -65,8 +65,6 @@ class FaceApi():
                         return Friend().get(Friend.person_id == canidate["personId"]), canidate["confidence"]
                     else:
                         return 0, 0
-                
-
         return 0,0
 
 
@@ -86,3 +84,8 @@ class FaceApi():
         print("r_l: " + str(recta_left) + "r_r: " + str(recta_right) +"r_t: " + str(recta_top) +"r_b: " + str(recta_bottom))
         print("r2_l: " + str(rectb_left) + "r2_r: " + str(rectb_right) +"r2_t: " + str(rectb_top) +"r2_b: " + str(rectb_bottom))
         return (recta_left < rectb_right and recta_right > rectb_left and recta_top > rectb_bottom and recta_bottom < rectb_top ) 
+
+    def distance(self, x1, x2, y1, y2):
+        import math
+        dist = math.hypot(x2 - x1, y2 - y1)
+        return dist
