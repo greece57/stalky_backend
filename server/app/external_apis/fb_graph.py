@@ -10,9 +10,9 @@ class FbGraph():
         from app.external_apis.cognitive_face import FaceApi
 
         id = str(id)
-        u = User.create(fb_id=id, person_group=id)
-        u.save()
-        id = id + "/friends"
+        if not User().select().where(User.fb_id==id).exists():
+            u = User.create(fb_id=id, person_group=id)
+            u.save()
         info = self.fb_graph.get_object(id="me/friends", fields="name,photos")
 
         for friend in info["data"]:
