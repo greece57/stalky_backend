@@ -28,7 +28,6 @@ class FbGraph():
                         i = Image(image_fb_id=photo_id, source_url=source, x=x, y=y, persisted_face_id="", friend=f)
                         i.save()
 
-
         FaceApi().train_faces_for_user(u)
 
     def get_user_info(self, user_id):

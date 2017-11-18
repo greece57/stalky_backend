@@ -14,7 +14,10 @@ class FaceApi():
 
     def train_faces_for_user(self, user):
         person_group_id = user.fb_id
-        CF.person_group.delete(person_group_id)
+        person_groups = CF.person_group.lists()
+        for p_group in person_groups:
+            if p_group["personGroupId"] == person_group_id:
+                CF.person_group.delete(person_group_id)
         CF.person_group.create(person_group_id)
         for friend in Friend.select().where(Friend.user==user):
             new_person = CF.person.create(person_group_id, friend.name)
