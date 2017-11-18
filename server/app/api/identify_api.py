@@ -33,8 +33,14 @@ class IdentifyApi(Resource):
         from app import APP
 
         id = request.args.get("id")
+        access_token = request.headers.get('authorization')
         if id == None:
             response = jsonify({"Error":"Specify a picture id"})
+            response.status_code = 400
+            return response
+
+        if access_token == None:
+            response = jsonify({"Error":"No Facebook Access Token Specified"})
             response.status_code = 400
             return response
 
@@ -69,7 +75,10 @@ class IdentifyApi(Resource):
             response.status_code = 204
             return response
 
+        friend_info = FbGraph(access_token).get_user_info(friend.fb_id)
+
         response = jsonify({"Friend Name":str(friend.name),
+                        "Friend Info":friend_info,
                         "Confidence":str(confidence)})
         response.status_code = 200
         return response

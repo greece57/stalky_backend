@@ -28,6 +28,10 @@ class FbGraph():
 
         FaceApi().train_faces_for_user(u)
 
+    def get_user_info(self, user_id):
+        info = self.fb_graph.get_object(id=id, fields="about,birthday,education,work")
+        return info
+
     def tags(self, name, photo_id):
         tagged_photos = self.fb_graph.get_object(id=photo_id, fields="images,tags")
         image = tagged_photos["images"][0]["source"]
