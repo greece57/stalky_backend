@@ -1,31 +1,35 @@
 import facebook as fb
 from app.model import *
 
-FB_API_TOKEN = "EAACEdEose0cBALCctoYzbmHOcaUZAUWkklvt9mZAKoGlwQAFZCBjbDT2kWXsDy7JfqAvZCvCIOFnRx12L3YsHJdmkZA3UYuAskFiR0f2RACtUWMwcdZAdhCIWSBteXHaavjex9TopTEgalzz9O3vL6yGYbkGsRpTw4ovQASYw8DM9dt724LPrGlThYZCHAv6xILneuZAjtIHUwZDZD"
-fb_graph = fb.GraphAPI(access_token=FB_API_TOKEN)
-
 class FbGraph():
 
-    def addUser(id, access_token):
-        u = User.create(fb_id=id, access_token=access_token, person_group=id)
+    def __init__(self, fb_access_token):
+        self.fb_graph = fb.GraphAPI(access_token=fb_access_token)
+
+    def addUser(self, id):
+        from app.external_apis.cognitive_face import FaceApi
+
+        id = str(id)
+        u = User.create(fb_id=id, person_group=id)
         u.save()
         id = id + "/friends"
-        info = fb_graph.get_object(id=id, fields="name,photos")
-
-        output = []
+        info = self.fb_graph.get_object(id=id, fields="name,photos")
 
         for friend in info["data"]:
             if "photos" in friend:
-                f = Friend.create(fb_id=friend["id"], name=friend["name"], face_id="", user=u)
+                f = Friend.create(fb_id=friend["id"], name=friend["name"], person_id="", user=u)
                 f.save()
                 for photo in friend["photos"]["data"]:
                     photo_id = photo["id"]
-                    source, x, y = FbGraph.tags(f.name,photo_id)
-                    i = Image(image_fb_id=photo_id, source_url=source, x=x, y=y, friend=f)
+                    source, x, y = self.tags(f.name,photo_id)
+                    i = Image(image_fb_id=photo_id, source_url=source, x=x, y=y, persisted_face_id="", friend=f)
                     i.save()
 
-    def tags(name, photo_id):
-        tagged_photos = fb_graph.get_object(id=photo_id, fields="images,tags")
+
+        FaceApi().train_faces_for_user(u)
+
+    def tags(self, name, photo_id):
+        tagged_photos = self.fb_graph.get_object(id=photo_id, fields="images,tags")
         image = tagged_photos["images"][0]["source"]
         width = tagged_photos["images"][0]["width"]
         height = tagged_photos["images"][0]["height"]

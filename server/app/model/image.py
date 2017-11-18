@@ -8,4 +8,5 @@ class Image(BaseModel):
     source_url = pw.CharField()
     x = pw.DoubleField()
     y = pw.DoubleField()
+    persisted_face_id = pw.CharField()
     friend = pw.ForeignKeyField(Friend)

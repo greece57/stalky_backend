@@ -6,5 +6,5 @@ class Friend(BaseModel):
 
     fb_id = pw.CharField()
     name = pw.CharField()
-    face_id = pw.CharField()
+    person_id = pw.CharField()
     user = pw.ForeignKeyField(User)

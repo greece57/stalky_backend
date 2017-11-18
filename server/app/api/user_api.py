@@ -5,50 +5,36 @@ from app.model import Image
 
 from app.helper.func_thread import FuncThread
 from app.external_apis.fb_graph import FbGraph
-
-import cognitive_face as CF
+from app.external_apis.cognitive_face import FaceApi
+from app.model.user import User
 
 class UserApi(Resource):
 
-    # def get(self):
-    #     image = Image.get()
-    #     url = image.source_url
-    #     face_exist = []
-    #     KEY = 'e6caf64b32b24455a6a4e2e91a386f76'  
-    #     CF.Key.set(KEY)
-    #     BASE_URL = 'https://westeurope.api.cognitive.microsoft.com/face/v1.0/'  
-    #     CF.BaseUrl.set(BASE_URL)
+    def get(self):
+        id = request.args.get("id")
+        if id == None:
+            response = jsonify({"Error":"Specify a user id"})
+            response.status_code = 400
+            return response
 
-    #     result = CF.face.detect(url)
+        if not User.select().where(User.fb_id == id).exists():
+            response = jsonify({"Error":"No user with specified id '" + str(id) + "'"})
 
-    #     for face in result:
-    #         rect = face["faceRectangle"]
-    #         exists = UserApi.contains(image.x, image.y, rect["left"], rect["top"],rect["width"], rect["height"])
-    #         face_exist.append(exists)
+        status = FaceApi().get_training_status(id)
+        response = jsonify(status)
+        response.status_code = 200
+        return response
 
-    #     response = jsonify(face_exist)
-    #     response.status_code = 200
-    #     return response
 
     def post(self):
         json_data = request.get_json(force=True)
         
         id = json_data["id"]
-        access_token = json_data["access_token"]
+        access_token = request.headers.get('authorization')
         
-        add_user_thread = FuncThread(lambda: FbGraph.addUser(id, access_token))
+        add_user_thread = FuncThread(lambda: FbGraph(access_token).addUser(id))
         add_user_thread.start()
         
         response = jsonify({"OK":"Adding User"})
         response.status_code = 200
         return response
-
-    def contains(fb_x, fb_y, rect_x, rect_y, rect_width, rect_height):
-        return (rect_x <= fb_x <= rect_x + rect_width and
-            rect_y <= fb_y <= rect_y + rect_height)
-
-    
-
-            
-
-        
