@@ -64,8 +64,7 @@ class FaceApi():
                         return Friend().get(Friend.person_id == canidate["personId"]), canidate["confidence"]
                     else:
                         return 0, 0
-                else:
-                    return 0,0
+                
 
         return 0,0
 
@@ -83,5 +82,5 @@ class FaceApi():
                 rect_y <= fb_y <= rect_y + rect_height)
 
     def overlap(recta_left, recta_right, recta_top, recta_bottom, rectb_left, rectb_right, rectb_top, rectb_bottom):
-        return (recta_left < rectb_right && recta_right > rectb_left &&
-     recta_top > rectb_bottom && recta_bottom < rectb_top ) 
+        return (recta_left < rectb_right and recta_right > rectb_left and
+     recta_top > rectb_bottom and recta_bottom < rectb_top ) 
