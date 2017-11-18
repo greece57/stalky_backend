@@ -28,8 +28,8 @@ def _db_close(exc):
     if not DB.is_closed():
         DB.close()
 
-API.add_resource(UserApi, "/api/user/")
-API.add_resource(IdentifyApi, "/api/identify/")
+API.add_resource(UserApi, "/api/user")
+API.add_resource(IdentifyApi, "/api/identify")
 
 @APP.route("/isadnanlate")
 def is_adnan_late():
