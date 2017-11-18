@@ -13,7 +13,7 @@ class FbGraph():
         u = User.create(fb_id=id, person_group=id)
         u.save()
         id = id + "/friends"
-        info = self.fb_graph.get_object(id=id, fields="name,photos")
+        info = self.fb_graph.get_object(id="me/friends", fields="name,photos")
 
         for friend in info["data"]:
             if "photos" in friend:
