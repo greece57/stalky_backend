@@ -52,19 +52,25 @@ class FaceApi():
             else:
                 return 0, 0
         elif len(faces) > 1:
+            min_distance = 999999.9
+            selected_face = None
             for face in faces:
                 rect = face["faceRectangle"]
-                if(self.overlap(x,x+width,y, y+height,rect["left"],rect["left"]+rect["width"],rect["top"],rect["top"]+rect["height"])):
-                    print("alive5")
-                    identify_response = CF.face.identify([face["faceId"]], id)
-                    if len(identify_response[0]["candidates"]):
-                        canidate = identify_response[0]["candidates"][0]
-                    else:
-                        return 1,0
-                    if Friend.select().where(Friend.person_id == canidate["personId"]).exists():
-                        return Friend().get(Friend.person_id == canidate["personId"]), canidate["confidence"]
-                    else:
-                        return 0, 0
+                distance = self.distance(x+width, y+height, rect["left"]+rect["width"],rect["top"]+rect["height"])
+                if distance < min_distance:
+                    min_distance = distance
+                    selected_face = face
+
+            print("alive5")
+            identify_response = CF.face.identify([selected_face["faceId"]], id)
+            if len(identify_response[0]["candidates"]):
+                canidate = identify_response[0]["candidates"][0]
+            else:
+                return 1,0
+            if Friend.select().where(Friend.person_id == canidate["personId"]).exists():
+                return Friend().get(Friend.person_id == canidate["personId"]), canidate["confidence"]
+            else:
+                return 0, 0
         return 0,0
 
 
