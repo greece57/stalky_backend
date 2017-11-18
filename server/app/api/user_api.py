@@ -10,25 +10,25 @@ import cognitive_face as CF
 
 class UserApi(Resource):
 
-    def get(self):
-        image = Image.get()
-        url = image.source_url
-        face_exist = []
-        KEY = 'e6caf64b32b24455a6a4e2e91a386f76'  
-        CF.Key.set(KEY)
-        BASE_URL = 'https://westeurope.api.cognitive.microsoft.com/face/v1.0/'  
-        CF.BaseUrl.set(BASE_URL)
+    # def get(self):
+    #     image = Image.get()
+    #     url = image.source_url
+    #     face_exist = []
+    #     KEY = 'e6caf64b32b24455a6a4e2e91a386f76'  
+    #     CF.Key.set(KEY)
+    #     BASE_URL = 'https://westeurope.api.cognitive.microsoft.com/face/v1.0/'  
+    #     CF.BaseUrl.set(BASE_URL)
 
-        result = CF.face.detect(url)
+    #     result = CF.face.detect(url)
 
-        for face in result:
-            rect = face["faceRectangle"]
-            exists = UserApi.contains(image.x, image.y, rect["left"], rect["top"],rect["width"], rect["height"])
-            face_exist.append(exists)
+    #     for face in result:
+    #         rect = face["faceRectangle"]
+    #         exists = UserApi.contains(image.x, image.y, rect["left"], rect["top"],rect["width"], rect["height"])
+    #         face_exist.append(exists)
 
-        response = jsonify(face_exist)
-        response.status_code = 200
-        return response
+    #     response = jsonify(face_exist)
+    #     response.status_code = 200
+    #     return response
 
     def post(self):
         json_data = request.get_json(force=True)
