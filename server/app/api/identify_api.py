@@ -68,11 +68,10 @@ class IdentifyApi(Resource):
             return response
 
         
-        json_data = request.get_json(force=True)
-        x = json_data["x"]
-        y = json_data["y"]
-        width = json_data["width"]
-        height = json_data["height"]
+        x = request.files["x"]
+        y = request.files["y"]
+        width = request.files["width"]
+        height = request.files["height"]
 
 
         image_url = "http://" + str(APP.config['WHOAMI']) + "/api/identify?filename=" + str(filename)
