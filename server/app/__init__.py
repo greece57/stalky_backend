@@ -9,7 +9,7 @@ from app.api.facebook_api import FacebookAPI
 APP = Flask(__name__)
 API = Api(APP)
 
-TABLES = []
+TABLES = [User, Friend, Image]
 DB.create_tables(TABLES, safe=True)
 
 # This hook ensures that a connection is opened to handle any queries
