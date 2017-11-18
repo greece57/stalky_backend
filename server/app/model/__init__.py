@@ -1,3 +1,3 @@
-from model.user import User
-from model.friend import Friend
-from model.image import Image
+from app.model.user import User
+from app.model.friend import Friend
+from app.model.image import Image
