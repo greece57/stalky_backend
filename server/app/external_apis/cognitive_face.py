@@ -34,6 +34,7 @@ class FaceApi():
         faces = CF.face.detect(image_url)
         if len(faces) == 1:
             identify_response = CF.face.identify([faces[0]["faceId"]], id)
+            print(identify_response)
             canidate = identify_response[0]["canidates"]
             if Friend.select().where(Friend.person_id == canidate["personId"]).exists():
                 return Friend().get(Friend.person_id == canidate["personId"]), canidate["confidence"]
