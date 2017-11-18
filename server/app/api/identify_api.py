@@ -67,6 +67,7 @@ class IdentifyApi(Resource):
             response.status_code = 400
             return response
 
+        print(request)
         
         x = request.files["x"]
         y = request.files["y"]
