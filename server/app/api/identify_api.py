@@ -82,6 +82,10 @@ class IdentifyApi(Resource):
             response = jsonify({"Message":"Idiot not found"})
             response.status_code = 204
             return response
+        elif friend == 1:
+            response = jsonify({"Message":"Idiot found but we dont know x"})
+            response.status_code = 2045
+            return response
 
         friend_info = FbGraph(access_token).get_user_info(friend.fb_id)
 
