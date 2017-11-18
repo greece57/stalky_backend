@@ -55,6 +55,7 @@ class FaceApi():
             for face in faces:
                 rect = face["faceRectangle"]
                 if(self.overlap(x,x+width,y, y+height,rect["left"],rect["left"]+width,rect["top"],rect["top"]+height)):
+                    print("alive 5")
                     identify_response = CF.face.identify([face["faceId"]], id)
                     if len(identify_response[0]["candidates"]):
                         canidate = identify_response[0]["candidates"][0]
