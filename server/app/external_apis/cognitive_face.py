@@ -33,6 +33,7 @@ class FaceApi():
     def identify_face(self, id, image_url):
         print("alive 1")
         faces = CF.face.detect(image_url)
+        print(len(faces))
         if len(faces) == 1:
             print("alive 2")
             identify_response = CF.face.identify([faces[0]["faceId"]], id)
