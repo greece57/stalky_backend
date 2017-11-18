@@ -26,3 +26,7 @@ def _db_close(exc):
         DB.close()
 
 API.add_resource(FacebookAPI, "/api/fb/<id>")
+
+@APP.route("/isadnanlate")
+def is_adnan_late():
+    return "yes"
