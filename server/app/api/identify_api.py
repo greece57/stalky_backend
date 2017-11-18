@@ -64,8 +64,13 @@ class IdentifyApi(Resource):
         image_url = "http://" + str(APP.config['WHOAMI']) + "/api/identify?filename=" + str(filename)
         print(image_url)
         friend, confidence = FaceApi().identify_face(id, image_url)
-        response = jsonify({"Friend Name":friend.name,
-                        "Confidence":confidence})
+        if friend == 0:
+            response = jsonify({"Message":"Idiot not found"})
+            response.status_code = 204
+            return response
+
+        response = jsonify({"Friend Name":str(friend.name),
+                        "Confidence":str(confidence)})
         response.status_code = 200
         return response
 
