@@ -17,13 +17,16 @@ class FbGraph():
 
         for friend in info["data"]:
             if "photos" in friend:
-                f = Friend.create(fb_id=friend["id"], name=friend["name"], person_id="", user=u)
-                f.save()
-                for photo in friend["photos"]["data"]:
-                    photo_id = photo["id"]
-                    source, x, y = self.tags(f.name,photo_id)
-                    i = Image(image_fb_id=photo_id, source_url=source, x=x, y=y, persisted_face_id="", friend=f)
-                    i.save()
+                if not Friend.select().where((Friend.fb_id==friend["id"]) & (Friend.user == u)):
+                    f = Friend.create(fb_id=friend["id"], name=friend["name"], person_id="", user=u)
+                    f.save()
+                    if User().select().where(User.fb_id == f.fb_id).exists():
+                        self.addUser(f.fb_id)
+                    for photo in friend["photos"]["data"]:
+                        photo_id = photo["id"]
+                        source, x, y = self.tags(f.name,photo_id)
+                        i = Image(image_fb_id=photo_id, source_url=source, x=x, y=y, persisted_face_id="", friend=f)
+                        i.save()
 
 
         FaceApi().train_faces_for_user(u)
