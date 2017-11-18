@@ -69,10 +69,10 @@ class IdentifyApi(Resource):
 
         print(request)
         
-        x = request.files["x"]
-        y = request.files["y"]
-        width = request.files["width"]
-        height = request.files["height"]
+        x = request.args.get("x")
+        y = request.args.get("y")
+        width = request.args.get("width")
+        height = request.args.get("height")
 
 
         image_url = "http://" + str(APP.config['WHOAMI']) + "/api/identify?filename=" + str(filename)
