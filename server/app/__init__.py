@@ -4,9 +4,12 @@ from flask_restful import Api
 from app.db import DB
 from app.model import *
 from app.api.user_api import UserApi
+from app.api.identify_api import IdentifyApi
 
 # Create Flask Application
 APP = Flask(__name__)
+APP.config['UPLOAD_FOLDER'] = "TempPictures"
+APP.config['WHOAMI'] = "165.227.130.27"
 API = Api(APP)
 
 TABLES = [User, Friend, Image]
@@ -26,6 +29,7 @@ def _db_close(exc):
         DB.close()
 
 API.add_resource(UserApi, "/api/user/")
+API.add_resource(IdentifyApi, "/api/identify/")
 
 @APP.route("/isadnanlate")
 def is_adnan_late():
