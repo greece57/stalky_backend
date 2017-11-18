@@ -19,3 +19,15 @@ services:
       - db
     depends_on:
       - db
+
+  phpmyadmin:
+      image: phpmyadmin/phpmyadmin
+      container_name: phpmyadmin
+      environment:
+        - PMA_HOST=db
+        - PMA_PORT=3306
+      restart: always
+      ports:
+        - 8080:80
+      volumes:
+        - /sessions
