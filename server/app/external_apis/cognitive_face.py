@@ -54,7 +54,7 @@ class FaceApi():
         elif len(faces) > 1:
             for face in faces:
                 rect = face["faceRectangle"]
-                if(overlap(x,x+width,y, y+height,rect["left"],rect["left"]+width,rect["top"],rect["top"]+height)):
+                if(self.overlap(x,x+width,y, y+height,rect["left"],rect["left"]+width,rect["top"],rect["top"]+height)):
                     identify_response = CF.face.identify([face["faceId"]], id)
                     if len(identify_response[0]["candidates"]):
                         canidate = identify_response[0]["candidates"][0]
@@ -81,6 +81,6 @@ class FaceApi():
         return (rect_x <= fb_x <= rect_x + rect_width and
                 rect_y <= fb_y <= rect_y + rect_height)
 
-    def overlap(recta_left, recta_right, recta_top, recta_bottom, rectb_left, rectb_right, rectb_top, rectb_bottom):
+    def overlap(self, recta_left, recta_right, recta_top, recta_bottom, rectb_left, rectb_right, rectb_top, rectb_bottom):
         return (recta_left < rectb_right and recta_right > rectb_left and
      recta_top > rectb_bottom and recta_bottom < rectb_top ) 
