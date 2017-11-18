@@ -17,6 +17,7 @@ class FbGraph():
             u = User.get(User.fb_id==id)
         info = self.fb_graph.get_object(id="me/friends", fields="name,photos")
 
+        added_images = False
         for friend in info["data"]:
             if "photos" in friend:
                 if not Friend.select().where((Friend.fb_id==friend["id"]) & (Friend.user == u)):
@@ -27,8 +28,10 @@ class FbGraph():
                         source, x, y = self.tags(f.name,photo_id)
                         i = Image(image_fb_id=photo_id, source_url=source, x=x, y=y, persisted_face_id="", friend=f)
                         i.save()
+                        added_images = True
 
-        FaceApi().train_faces_for_user(u)
+        if added_images:
+            FaceApi().train_faces_for_user(u)
 
     def get_user_info(self, user_id):
         info = self.fb_graph.get_object(id=user_id, fields="about,birthday,education,work")
