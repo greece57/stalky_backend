@@ -13,6 +13,8 @@ class FbGraph():
         if not User().select().where(User.fb_id==id).exists():
             u = User.create(fb_id=id, person_group=id)
             u.save()
+        else:
+            u = User.get(User.fb_id==id)
         info = self.fb_graph.get_object(id="me/friends", fields="name,photos")
 
         for friend in info["data"]:
