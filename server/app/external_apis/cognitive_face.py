@@ -39,6 +39,7 @@ class FaceApi():
             identify_response = CF.face.identify([faces[0]["faceId"]], id)
             print(identify_response)
             canidate = identify_response[0]["candidates"][0]
+            print(canidate)
             print("alive 4")
             if Friend.select().where(Friend.person_id == canidate["personId"]).exists():
                 return Friend().get(Friend.person_id == canidate["personId"]), canidate["confidence"]
