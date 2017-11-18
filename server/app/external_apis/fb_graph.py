@@ -29,7 +29,7 @@ class FbGraph():
         FaceApi().train_faces_for_user(u)
 
     def get_user_info(self, user_id):
-        info = self.fb_graph.get_object(id=id, fields="about,birthday,education,work")
+        info = self.fb_graph.get_object(id=user_id, fields="about,birthday,education,work")
         return info
 
     def tags(self, name, photo_id):
