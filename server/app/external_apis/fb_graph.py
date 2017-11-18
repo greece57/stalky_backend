@@ -6,8 +6,8 @@ fb_graph = fb.GraphAPI(access_token=FB_API_TOKEN)
 
 class FbGraph():
 
-    def addUser(id):
-        u = User.create(fb_id=id,person_group=id)
+    def addUser(id, access_token):
+        u = User.create(fb_id=id, access_token=access_token, person_group=id)
         u.save()
         id = id + "/friends"
         info = fb_graph.get_object(id=id, fields="name,photos")
