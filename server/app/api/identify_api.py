@@ -58,7 +58,7 @@ class IdentifyApi(Resource):
         #friend, confidence = FaceApi().identify_face(id, image_url)
         #response = jsonify({"Friend Name":friend.name,
         #                "Confidence":confidence})
-        respone = jsonify({"Friend Name":"friend.name",
+        response = jsonify({"Friend Name":"friend.name",
                         "Confidence":"confidence"})
         response.status_code = 200
         return response
