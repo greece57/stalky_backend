@@ -37,8 +37,11 @@ class FbGraph():
         info = self.fb_graph.get_object(id=user_id, fields="about,birthday,education,work")
         print("Find Mutual Stuff")
         mutual_events, mutual_books, mutual_music = self.get_mutual_stuff(user_id)
+        print("Found mutual stuff")
         info["mutual_events"] = mutual_events
+        print("Added Events")
         info["mutual_books"] = mutual_books
+        print("Added Books")
         info["mutual_music"] = mutual_music
         return info
 
