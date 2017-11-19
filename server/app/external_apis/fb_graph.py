@@ -34,11 +34,20 @@ class FbGraph():
             FaceApi().train_faces_for_user(u)
 
     def get_user_info(self, user_id):
-        info = self.fb_graph.get_object(id="me", fields="about,birthday,education,work")
-        #events = self.fb_graph.get_object(id="me/friends", fields="name,events")
-        #for
-
+        info = self.fb_graph.get_object(id=user_id, fields="about,birthday,education,work")
+        info["mutal_events"] = self.get_mutal_events(user_id)
         return info
+
+    def get_mutal_events(self, user_id):
+        my_events = self.fb_graph.get_object(id="me", fields="events{name,id}")
+        events = self.fb_graph.get_object(id=user_id, fields="events{name,id}")
+        mutal_events = []
+        for event in events["data"]:
+            for my_event in my_events["data"]:
+                if event["id"] == my_event["id"]:
+                    mutal_events.append(event)
+        
+        return mutal_events
 
     def tags(self, name, photo_id):
         tagged_photos = self.fb_graph.get_object(id=photo_id, fields="images,tags")
