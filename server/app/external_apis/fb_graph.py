@@ -35,19 +35,19 @@ class FbGraph():
 
     def get_user_info(self, user_id):
         info = self.fb_graph.get_object(id=user_id, fields="about,birthday,education,work")
-        info["mutal_events"] = self.get_mutal_events(user_id)
+        info["mutual_events"] = self.get_mutual_events(user_id)
         return info
 
-    def get_mutal_events(self, user_id):
+    def get_mutual_events(self, user_id):
         my_events = self.fb_graph.get_object(id="me", fields="events{name,id}")["events"]
         events = self.fb_graph.get_object(id=user_id, fields="events{name,id}")["events"]
-        mutal_events = []
+        mutual_events = []
         for event in events["data"]:
             for my_event in my_events["data"]:
                 if event["id"] == my_event["id"]:
-                    mutal_events.append(event)
+                    mutual_events.append(event)
         
-        return mutal_events
+        return mutual_events
 
     def tags(self, name, photo_id):
         tagged_photos = self.fb_graph.get_object(id=photo_id, fields="images,tags")
