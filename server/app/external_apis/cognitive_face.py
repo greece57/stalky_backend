@@ -95,5 +95,6 @@ class FaceApi():
     def distance(self, x1, y1, x2, y2):
         print("x1: " + str(x1) + "y1: " + str(y1) + "x2: " + str(x2) + "y2: " + str(y2) )
         import math
-        dist = math.hypot(x2 - x1, y2 - y1)
+        #dist = math.hypot(x2 - x1, y2 - y1)
+        dist = abs(x2-x1)+abs(y2-y1)
         return dist
