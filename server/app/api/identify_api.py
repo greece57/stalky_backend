@@ -94,7 +94,7 @@ class IdentifyApi(Resource):
         friend_info["last_seen_location"] = friend.last_seen_location
         friend_info["last_seen_date"] = friend.last_seen_date
 
-        friend.last_seen_date = "date"
+        friend.last_seen_date = date
         if location != "":
             friend.last_seen_location = location
         
