@@ -39,8 +39,8 @@ class FbGraph():
         return info
 
     def get_mutal_events(self, user_id):
-        my_events = self.fb_graph.get_object(id="me", fields="events{name,id}")
-        events = self.fb_graph.get_object(id=user_id, fields="events{name,id}")
+        my_events = self.fb_graph.get_object(id="me", fields="events{name,id}")["events"]
+        events = self.fb_graph.get_object(id=user_id, fields="events{name,id}")["events"]
         mutal_events = []
         for event in events["data"]:
             for my_event in my_events["data"]:
