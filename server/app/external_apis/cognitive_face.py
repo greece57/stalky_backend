@@ -56,7 +56,7 @@ class FaceApi():
             selected_face = None
             for face in faces:
                 rect = face["faceRectangle"]
-                distance = self.distance(x, y, rect["left"]+rect["width"],rect["top"]+rect["height"])
+                distance = self.distance(x, y, rect["left"]+(rect["width"]*0.5),rect["top"]+(rect["height"])*0.5)
                 print("distance is: " + str(distance))
                 if distance < min_distance:
                     min_distance = distance
