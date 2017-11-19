@@ -34,7 +34,7 @@ class FbGraph():
             FaceApi().train_faces_for_user(u)
 
     def get_user_info(self, user_id):
-        info = self.fb_graph.get_object(id=user_id, fields="about,birthday,education,work")
+        info = self.fb_graph.get_object(id=user_id, fields="about,birthday,education,work,relationship_status")
         mutual_events, mutual_books, mutual_music = self.get_mutual_stuff(user_id)
         info["mutual_events"] = mutual_events
         info["mutual_books"] = mutual_books
