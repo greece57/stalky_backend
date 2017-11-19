@@ -52,6 +52,8 @@ class FbGraph():
         return mutual_events, mutual_books, mutual_music
 
     def find_mutual_stuff(self, stuff_name, mine, other):
+        if (not stuff_name in mine) or (not stuff_name in other):
+            return []
         my_things = mine[stuff_name]["data"]
         things = other[stuff_name]["data"]
 
