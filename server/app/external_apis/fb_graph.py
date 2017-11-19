@@ -35,6 +35,7 @@ class FbGraph():
 
     def get_user_info(self, user_id):
         info = self.fb_graph.get_object(id=user_id, fields="about,birthday,education,work")
+        print("Find Mutual Stuff")
         mutual_events, mutual_books, mutual_music = self.get_mutual_stuff(user_id)
         info["mutual_events"] = mutual_events
         info["mutual_books"] = mutual_books
@@ -46,21 +47,24 @@ class FbGraph():
         stuff = self.fb_graph.get_object(id=user_id, fields="events{name,id},books{name},music.limit(100){name}")
 
         mutual_events = self.find_mutual_stuff("events", my_stuff, stuff)
-        mutual_books = self.find_mutual_stuff("events", my_stuff, stuff)
-        mutual_music = self.find_mutual_stuff("events", my_stuff, stuff)
+        print("Find Mutual Books")
+        mutual_books = self.find_mutual_stuff("books", my_stuff, stuff)
+        mutual_music = self.find_mutual_stuff("music", my_stuff, stuff)
 
         return mutual_events, mutual_books, mutual_music
 
     def find_mutual_stuff(self, stuff_name, mine, other):
         if (not stuff_name in mine) or (not stuff_name in other):
             return []
+
+        print("Getting " + stuff_name + " out of that")
         my_things = mine[stuff_name]["data"]
         things = other[stuff_name]["data"]
 
         mutual_stuff = []
         for stuff in things:
             for my_stuff in my_things:
-                if stuff.get("id", 0) == my_stuff.get("id", 1):
+                if stuff["id"] == my_stuff["id"]:
                     mutual_stuff.append(mutual_stuff)
 
         return mutual_stuff
