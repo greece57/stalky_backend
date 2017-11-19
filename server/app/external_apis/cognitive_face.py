@@ -33,7 +33,7 @@ class FaceApi():
 
         CF.person_group.train(person_group_id)
 
-    def identify_face(self, id, image_url):
+    def identify_face(self, id, image_url, x, y, width, height):
         print("alive 1")
         faces = CF.face.detect(image_url)
         print(len(faces))
@@ -41,9 +41,32 @@ class FaceApi():
             print("alive 2")
             identify_response = CF.face.identify([faces[0]["faceId"]], id)
             print(identify_response)
-            canidate = identify_response[0]["candidates"][0]
+            if len(identify_response[0]["candidates"]):
+                canidate = identify_response[0]["candidates"][0]
+            else:
+                return 1,0
             print(canidate)
             print("alive 4")
+            if Friend.select().where(Friend.person_id == canidate["personId"]).exists():
+                return Friend().get(Friend.person_id == canidate["personId"]), canidate["confidence"]
+            else:
+                return 0, 0
+        elif len(faces) > 1:
+            min_distance = 999999.9
+            selected_face = None
+            for face in faces:
+                rect = face["faceRectangle"]
+                distance = self.distance(x+width, y+height, rect["left"]+rect["width"],rect["top"]+rect["height"])
+                if distance < min_distance:
+                    min_distance = distance
+                    selected_face = face
+
+            print("alive5")
+            identify_response = CF.face.identify([selected_face["faceId"]], id)
+            if len(identify_response[0]["candidates"]):
+                canidate = identify_response[0]["candidates"][0]
+            else:
+                return 1,0
             if Friend.select().where(Friend.person_id == canidate["personId"]).exists():
                 return Friend().get(Friend.person_id == canidate["personId"]), canidate["confidence"]
             else:
@@ -63,3 +86,12 @@ class FaceApi():
         return (rect_x <= fb_x <= rect_x + rect_width and
                 rect_y <= fb_y <= rect_y + rect_height)
 
+    def overlap(self, recta_left, recta_right, recta_top, recta_bottom, rectb_left, rectb_right, rectb_top, rectb_bottom):
+        print("r_l: " + str(recta_left) + "r_r: " + str(recta_right) +"r_t: " + str(recta_top) +"r_b: " + str(recta_bottom))
+        print("r2_l: " + str(rectb_left) + "r2_r: " + str(rectb_right) +"r2_t: " + str(rectb_top) +"r2_b: " + str(rectb_bottom))
+        return (recta_left < rectb_right and recta_right > rectb_left and recta_top > rectb_bottom and recta_bottom < rectb_top ) 
+
+    def distance(self, x1, x2, y1, y2):
+        import math
+        dist = math.hypot(x2 - x1, y2 - y1)
+        return dist

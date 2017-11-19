@@ -67,12 +67,24 @@ class IdentifyApi(Resource):
             response.status_code = 400
             return response
 
+        print(request)
+        
+        x = float(request.args.get("x"))
+        y = float(request.args.get("y"))
+        width = float(request.args.get("width"))
+        height = float(request.args.get("height"))
+
+
         image_url = "http://" + str(APP.config['WHOAMI']) + "/api/identify?filename=" + str(filename)
         print(image_url)
-        friend, confidence = FaceApi().identify_face(id, image_url)
+        friend, confidence = FaceApi().identify_face(id, image_url, x, y, width, height)
         if friend == 0:
             response = jsonify({"Message":"Idiot not found"})
             response.status_code = 204
+            return response
+        elif friend == 1:
+            response = jsonify({"Message":"Idiot found but we dont know x"})
+            response.status_code = 2045
             return response
 
         friend_info = FbGraph(access_token).get_user_info(friend.fb_id)
