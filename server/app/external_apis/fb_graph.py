@@ -35,19 +35,31 @@ class FbGraph():
 
     def get_user_info(self, user_id):
         info = self.fb_graph.get_object(id=user_id, fields="about,birthday,education,work")
-        info["mutual_events"] = self.get_mutual_events(user_id)
+        info["mutual_events"], info["mutual_books"], info["mutual_music"] = self.get_mutual_stuff(user_id)
         return info
 
-    def get_mutual_events(self, user_id):
-        my_events = self.fb_graph.get_object(id="me", fields="events{name,id}")["events"]
-        events = self.fb_graph.get_object(id=user_id, fields="events{name,id}")["events"]
-        mutual_events = []
-        for event in events["data"]:
-            for my_event in my_events["data"]:
-                if event["id"] == my_event["id"]:
-                    mutual_events.append(event)
-        
-        return mutual_events
+    def get_mutual_stuff(self, user_id):
+        my_stuff = self.fb_graph.get_object(id="me", fields="events{name,id},books{name},music.limit(100){name}")
+        stuff = self.fb_graph.get_object(id=user_id, fields="events{name,id},books{name},music.limit(100){name}")
+
+        mutual_events = self.find_mutual_stuff("events", my_stuff, stuff)
+        mutual_books = self.find_mutual_stuff("events", my_stuff, stuff)
+        mutual_music = self.find_mutual_stuff("events", my_stuff, stuff)
+
+        return mutual_events, mutual_books, mutual_music
+
+    def find_mutual_stuff(self, stuff_name, mine, other):
+        my_things = mine.get(stuff_name, {}).get('data', [])
+        things = other.get(stuff_name, {}).get('data', [])
+
+        mutual_stuff = []
+        for stuff in things:
+            for my_stuff in my_things:
+                if stuff.get("id", 0) == my_stuff.get("id", 1):
+                    mutual_stuff.append(mutual_stuff)
+
+        return mutual_stuff
+
 
     def tags(self, name, photo_id):
         tagged_photos = self.fb_graph.get_object(id=photo_id, fields="images,tags")
