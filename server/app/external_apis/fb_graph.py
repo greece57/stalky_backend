@@ -52,8 +52,8 @@ class FbGraph():
         return mutual_events, mutual_books, mutual_music
 
     def find_mutual_stuff(self, stuff_name, mine, other):
-        my_things = mine.get(stuff_name, {"data":[]})["data"]
-        things = other.get(stuff_name, {"data":[]})["data"]
+        my_things = mine[stuff_name]["data"]
+        things = other[stuff_name]["data"]
 
         mutual_stuff = []
         for stuff in things:
