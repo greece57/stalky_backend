@@ -30,6 +30,7 @@ class UserApi(Resource):
         json_data = request.get_json(force=True)
         
         id = json_data["id"]
+        print(id)
         access_token = request.headers.get('authorization')
         
         add_user_thread = FuncThread(lambda: FbGraph(access_token).addUser(id))
