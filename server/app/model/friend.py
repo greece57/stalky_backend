@@ -7,4 +7,6 @@ class Friend(BaseModel):
     fb_id = pw.CharField()
     name = pw.CharField()
     person_id = pw.CharField()
+    last_seen_location = pw.CharField()
+    last_seen_date = pw.CharField()
     user = pw.ForeignKeyField(User)

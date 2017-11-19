@@ -21,7 +21,7 @@ class FbGraph():
         for friend in info["data"]:
             if "photos" in friend:
                 if not Friend.select().where((Friend.fb_id==friend["id"]) & (Friend.user == u)):
-                    f = Friend.create(fb_id=friend["id"], name=friend["name"], person_id="", user=u)
+                    f = Friend.create(fb_id=friend["id"], name=friend["name"], person_id="", last_seen_location="", last_seen_date="", user=u)
                     f.save()
                     for photo in friend["photos"]["data"]:
                         photo_id = photo["id"]

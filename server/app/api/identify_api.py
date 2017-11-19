@@ -89,6 +89,18 @@ class IdentifyApi(Resource):
 
         friend_info = FbGraph(access_token).get_user_info(friend.fb_id)
 
+        location = request.args.get("location")
+        date = request.args.get("date")
+        friend_info["last_seen_location"] = friend.last_seen_location
+        friend_info["last_seen_date"] = friend.last_seen_date
+
+        friend.last_seen_date = "date"
+        if location != "":
+            friend.last_seen_location = location
+        
+        friend.save()
+        
+
         response = jsonify({"Friend Name":str(friend.name),
                         "Friend Info":friend_info,
                         "Confidence":str(confidence)})
