@@ -56,7 +56,8 @@ class FaceApi():
             selected_face = None
             for face in faces:
                 rect = face["faceRectangle"]
-                distance = self.distance(x+width, y+height, rect["left"]+rect["width"],rect["top"]+rect["height"])
+                distance = self.distance(x, y, rect["left"]+(rect["width"]*0.5),rect["top"]+(rect["height"])*0.5)
+                print("distance is: " + str(distance))
                 if distance < min_distance:
                     min_distance = distance
                     selected_face = face
@@ -91,7 +92,8 @@ class FaceApi():
         print("r2_l: " + str(rectb_left) + "r2_r: " + str(rectb_right) +"r2_t: " + str(rectb_top) +"r2_b: " + str(rectb_bottom))
         return (recta_left < rectb_right and recta_right > rectb_left and recta_top > rectb_bottom and recta_bottom < rectb_top ) 
 
-    def distance(self, x1, x2, y1, y2):
+    def distance(self, x1, y1, x2, y2):
+        print("x1: " + str(x1) + "y1: " + str(y1) + "x2: " + str(x2) + "y2: " + str(y2) )
         import math
         dist = math.hypot(x2 - x1, y2 - y1)
         return dist
