@@ -93,6 +93,7 @@ class FaceApi():
         return (recta_left < rectb_right and recta_right > rectb_left and recta_top > rectb_bottom and recta_bottom < rectb_top ) 
 
     def distance(self, x1, x2, y1, y2):
+        print("x1: " + str(x1) + "y1: " + str(y1) + "x2: " + str(x2) + "y2: " + str(y2) )
         import math
         dist = math.hypot(x2 - x1, y2 - y1)
         return dist
