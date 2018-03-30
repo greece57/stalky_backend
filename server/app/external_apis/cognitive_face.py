@@ -28,11 +28,13 @@ class FaceApi():
                 time.sleep(4)   # delays for 5 seconds so Rate Limit is not exceeded
                 rect = self.get_rectangle_in_image(image)
                 if rect != 0:
+                    time.sleep(4)
                     rect_param = str(rect["left"]) + "," + str(rect["top"]) + "," + str(rect["width"]) + "," + str(rect["height"])
                     new_face = CF.person.add_face(image.source_url, person_group_id, friend.person_id, target_face=rect_param)
                     image.persisted_face_id = new_face["persistedFaceId"]
                     image.save()
 
+        time.sleep(4)
         CF.person_group.train(person_group_id)
 
     def identify_face(self, id, image_url, x, y, width, height):
