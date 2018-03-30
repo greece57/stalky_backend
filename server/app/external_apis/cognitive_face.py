@@ -6,7 +6,7 @@ class FaceApi():
     def __init__(self):
         KEY = 'e046e6a645aa47f592a1f9daa036b990'  
         CF.Key.set(KEY)
-        BASE_URL = 'https://westeurope.api.cognitive.microsoft.com/face/v1.0/'  
+        BASE_URL = 'https://westcentralus.api.cognitive.microsoft.com/face/v1.0'  
         CF.BaseUrl.set(BASE_URL)
 
     def get_training_status(self, id):
