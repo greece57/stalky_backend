@@ -4,7 +4,7 @@ from app.model import *
 class FaceApi():
 
     def __init__(self):
-        KEY = 'e6caf64b32b24455a6a4e2e91a386f76'  
+        KEY = '944dd096f3c5430db0178e7e4ecc8d6e'  
         CF.Key.set(KEY)
         BASE_URL = 'https://westeurope.api.cognitive.microsoft.com/face/v1.0/'  
         CF.BaseUrl.set(BASE_URL)
