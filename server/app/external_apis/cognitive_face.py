@@ -1,3 +1,4 @@
+import time
 import cognitive_face as CF
 from app.model import *
 
@@ -24,6 +25,7 @@ class FaceApi():
             friend.person_id = new_person["personId"]
             friend.save()
             for image in Image.select().where(Image.friend==friend):
+                time.sleep(4)   # delays for 5 seconds so Rate Limit is not exceeded
                 rect = self.get_rectangle_in_image(image)
                 if rect != 0:
                     rect_param = str(rect["left"]) + "," + str(rect["top"]) + "," + str(rect["width"]) + "," + str(rect["height"])
